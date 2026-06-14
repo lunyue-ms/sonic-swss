@@ -1,5 +1,6 @@
 #include <iostream>
 #include <inttypes.h>
+#include <sys/stat.h>
 #include "logger.h"
 #include "select.h"
 #include "selectabletimer.h"
@@ -76,7 +77,14 @@ int main(int argc, char **argv)
     NetDispatcher::getInstance().registerMessageHandler(RTM_NEWLINK, &sync);
     NetDispatcher::getInstance().registerMessageHandler(RTM_DELLINK, &sync);
 
-    rtnl_route_read_protocol_names(DefaultRtProtoPath);
+    struct stat st;
+    auto routeProtoFilePath = DefaultRtProtoPath;
+
+    if (stat(OverrideRtProtoPath, &st) == 0) {
+        routeProtoFilePath = OverrideRtProtoPath;
+    }
+
+    rtnl_route_read_protocol_names(routeProtoFilePath);
 
     std::string suppressionEnabledStr;
     deviceMetadataTable.hget("localhost", "suppress-fib-pending", suppressionEnabledStr);

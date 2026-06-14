@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <sys/stat.h>
 #include "tests/mock_tests/mock_table.h"
 #define private public
 #include "fpmsyncd/routesync.h"
@@ -54,7 +55,16 @@ class FpmSyncdResponseTest : public ::testing::Test
 public:
     void SetUp() override
     {
-        EXPECT_EQ(rtnl_route_read_protocol_names(DefaultRtProtoPath), 0);
+        struct stat st;
+        if (stat(DefaultRtProtoPath, &st) == 0) {
+            EXPECT_EQ(rtnl_route_read_protocol_names(DefaultRtProtoPath), 0);
+        } else if (stat(OverrideRtProtoPath, &st) == 0) {
+            EXPECT_EQ(rtnl_route_read_protocol_names(OverrideRtProtoPath), 0);
+        } else {
+            FAIL() << "Neither " << DefaultRtProtoPath
+                   << " nor " << OverrideRtProtoPath
+                   << " exists";
+        }
         m_routeSync.setSuppressionEnabled(true);
     }
 

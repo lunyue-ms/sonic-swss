@@ -27,7 +27,9 @@ extern void netlink_parse_rtattr(struct rtattr **tb, int max, struct rtattr *rta
 namespace swss {
 
 /* Path to protocol name database provided by iproute2 */
-constexpr auto DefaultRtProtoPath = "/etc/iproute2/rt_protos";
+constexpr auto DefaultRtProtoPath = "/usr/share/iproute2/rt_protos";
+
+constexpr auto OverrideRtProtoPath = "/etc/iproute2/rt_protos";
 
 class RouteSync : public NetMsg
 {
