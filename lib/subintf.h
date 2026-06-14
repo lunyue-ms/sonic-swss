@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 
 #define VLAN_SUB_INTERFACE_SEPARATOR   "."
