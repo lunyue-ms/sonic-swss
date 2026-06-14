@@ -69,6 +69,8 @@ fi
 CFLAGS_COMMON+=" -Werror"
 CFLAGS_COMMON+=" -Wno-error=deprecated-declarations"
 CFLAGS_COMMON+=" -Wno-error=overloaded-virtual"
+CFLAGS_COMMON+=" -Wno-error=calloc-transposed-args"
+CFLAGS_COMMON+=" -Wno-error=template-id-cdtor"
 CFLAGS_COMMON+=" -Wno-reorder"
 CFLAGS_COMMON+=" -Wcast-align"
 CFLAGS_COMMON+=" -Wcast-qual"
