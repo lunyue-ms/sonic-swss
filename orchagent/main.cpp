@@ -435,7 +435,11 @@ int main(int argc, char **argv)
         case 'q':
             if (optarg)
             {
-                zmq_server_address = optarg;
+                // orchagent.sh passes the ZMQ host/transport without a port
+                // (e.g. tcp://127.0.0.1); append ORCH_ZMQ_PORT so ZmqServer binds
+                // a valid endpoint. swss-common's ZmqServer binds the endpoint
+                // literally, so the port must be present.
+                zmq_server_address = string(optarg) + ":" + to_string(ORCH_ZMQ_PORT);
                 enable_zmq = true;
             }
             break;
