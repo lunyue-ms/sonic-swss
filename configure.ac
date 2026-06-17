@@ -69,8 +69,12 @@ fi
 CFLAGS_COMMON+=" -Werror"
 CFLAGS_COMMON+=" -Wno-error=deprecated-declarations"
 CFLAGS_COMMON+=" -Wno-error=overloaded-virtual"
-CFLAGS_COMMON+=" -Wno-error=calloc-transposed-args"
-CFLAGS_COMMON+=" -Wno-error=template-id-cdtor"
+# -Wcalloc-transposed-args (GCC >= 14) and -Wtemplate-id-cdtor (GCC >= 13) do
+# not exist on the bookworm slave (GCC 12), where "-Wno-error=<unknown>" is a
+# hard error. The plain "-Wno-" form is silently ignored by older GCC and
+# disables the warning on newer GCC, so it works for both passes.
+CFLAGS_COMMON+=" -Wno-calloc-transposed-args"
+CFLAGS_COMMON+=" -Wno-template-id-cdtor"
 CFLAGS_COMMON+=" -Wno-reorder"
 CFLAGS_COMMON+=" -Wcast-align"
 CFLAGS_COMMON+=" -Wcast-qual"
